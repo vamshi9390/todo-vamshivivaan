@@ -22,7 +22,20 @@ export default function Login() {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes("Email not confirmed")) {
+          toast({
+            variant: "destructive",
+            description: "Please check your email to confirm your account before logging in.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        }
+        return;
+      }
       
       toast({
         description: "Successfully logged in!",
