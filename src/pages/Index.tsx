@@ -24,6 +24,27 @@ const Index = () => {
 
   useEffect(() => {
     loadTodos();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'todos'
+        },
+        (payload) => {
+          console.log('Change received!', payload);
+          loadTodos(); // Reload todos when changes occur
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const loadTodos = async () => {
@@ -41,6 +62,7 @@ const Index = () => {
         variant: "destructive",
         description: "Failed to load todos",
       });
+      console.error('Error loading todos:', error);
       return;
     }
 
@@ -64,6 +86,7 @@ const Index = () => {
         variant: "destructive",
         description: "Failed to add todo",
       });
+      console.error('Error adding todo:', error);
       return;
     }
 
@@ -87,6 +110,7 @@ const Index = () => {
         variant: "destructive",
         description: "Failed to update todo",
       });
+      console.error('Error updating todo:', error);
       return;
     }
 
@@ -106,6 +130,7 @@ const Index = () => {
         variant: "destructive",
         description: "Failed to delete todo",
       });
+      console.error('Error deleting todo:', error);
       return;
     }
 
