@@ -9,11 +9,26 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const validatePassword = (pwd: string) => {
+    if (pwd.length < 6) {
+      setPasswordError("Password must be at least 6 characters long");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validatePassword(password)) {
+      return;
+    }
+
     setLoading(true);
     
     try {
@@ -65,6 +80,9 @@ export default function Signup() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {passwordError && (
+                <p className="text-sm text-red-500 mt-1">{passwordError}</p>
+              )}
             </div>
           </div>
 
