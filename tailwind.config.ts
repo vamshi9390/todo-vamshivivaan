@@ -72,11 +72,26 @@ export default {
           "50%": { transform: "scale(0.95)", opacity: "0.5" },
           "100%": { transform: "scale(0.9)", opacity: "0" },
         },
+        blob: {
+          "0%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+          "33%": {
+            transform: "translate(-50%, -50%) scale(1.1)",
+          },
+          "66%": {
+            transform: "translate(-50%, -50%) scale(0.9)",
+          },
+          "100%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "task-complete": "task-complete 0.3s ease-out",
+        "blob": "blob 7s infinite",
       },
     },
   },
